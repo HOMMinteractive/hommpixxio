@@ -1,0 +1,115 @@
+/**
+ * HOMM pixx.io plugin for Craft CMS
+ *
+ * HOMMPixxioField Field CSS
+ *
+ * @author    Benjamin Ammann
+ * @copyright Copyright (c) 2024 HOMM interactive
+ * @link      https://github.com/HOMMinteractive
+ * @package   HOMMPixxio
+ * @since     0.0.1
+ */
+
+
+ /* Craft Field */
+.pixxio-field .pixxio-file {
+    margin-bottom: calc(var(--padding) / 2);
+}
+
+.pixxio-field .pixxio-file figure img {
+    max-width: 100%;
+    height: auto;
+    max-height: 250px;
+    padding: var(--padding);
+}
+
+.pixxio-field .pixxioField_removefile::before {
+    margin-top: -5px;
+}
+
+/* Modalbox */
+@media screen and (max-width: 860px) {
+    body.ltr .pixxio-modal .content.has-sidebar:not(.show-sidebar) {
+        margin-left: 0;
+    }
+}
+
+.pixxio-modal .pixxio-mobile-toggle {
+    display: none;
+    margin-right: 3px;
+    margin-left: -5px;
+}
+
+@media screen and (max-width: 860px) {
+    .pixxio-modal .pixxio-mobile-toggle {
+        display: block;
+    }
+}
+
+.pixxio-modal .search-container.texticon .clear-btn {
+    right: 10px !important;
+}
+
+.pixxio-modal .search-container input:placeholder-shown + .clear-btn {
+    display: none !important;
+}
+
+.pixxio-modal .homm-pixxio .thumbsview {
+    display: grid;
+    gap: 30px 15px;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.pixxio-modal .homm-pixxio .thumbsview [data-pixxio-type="directory"],
+.pixxio-modal .homm-pixxio .thumbsview [data-pixxio-type="file"] {
+    display: block;
+    border-radius: 1px;
+    position: relative;
+    width: max-content;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.pixxio-modal .homm-pixxio .thumbsview [data-pixxio-type="directory"] svg,
+.pixxio-modal .homm-pixxio .thumbsview [data-pixxio-type="file"] img {
+    height: 300px;
+    width: 100%;
+    margin: 0 auto;
+    object-fit: contain;
+}
+
+.pixxio-modal .homm-pixxio .thumbsview [data-pixxio-type="directory"] figcaption,
+.pixxio-modal .homm-pixxio .thumbsview [data-pixxio-type="file"] figcaption {
+    overflow: hidden;
+    margin-top: 1em;
+    hyphens: auto;
+}
+
+.pixxio-modal .homm-pixxio .thumbsview [data-pixxio-type="file"] [data-icon="external"] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--gray-100);
+    transition: background 100ms ease-in-out;
+    border-radius: var(--xs);
+    color: var(--dark-sel-color);
+    font-size: 1.25em;
+    padding: 0.4em;
+    margin: 0.5em;
+}
+
+.pixxio-modal .homm-pixxio [data-pixxio-type="file"] [data-icon="external"]:hover {
+    background: var(--gray-200);
+}
+
+.pixxio-modal .homm-pixxio .pixxio--selected {
+    outline: 2px solid var(--red-600);
+    outline-offset: 5px;
+}
+
+.pixxio-modal .pixxio-page-info {
+    padding: 6px 0;
+}

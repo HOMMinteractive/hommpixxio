@@ -1,0 +1,45 @@
+{
+    "name": "homm/hommpixxio",
+    "description": "Craft CMS pixx.io adapter",
+    "type": "craft-plugin",
+    "version": "0.0.1",
+    "keywords": [
+        "craft",
+        "cms",
+        "craftcms",
+        "craft-plugin",
+        "hommpixxio",
+        "pixx.io adapter"
+    ],
+    "support": {
+        "docs": "https://github.com/HOMMinteractive/pixxio/blob/master/README.md",
+        "issues": "https://github.com/HOMMinteractive/pixxio/issues"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Benjamin Ammann",
+            "homepage": "https://github.com/ammannbe"
+        }
+    ],
+    "require": {
+        "php": "^8.0|^8.1",
+        "craftcms/cms": "^4.0.0",
+        "ext-json": "*",
+        "ext-fileinfo": "*"
+    },
+    "autoload": {
+        "psr-4": {
+          "homm\\hommpixxio\\": "src/"
+        }
+    },
+    "extra": {
+        "name": "HOMM pixx.io",
+        "handle": "hommpixxio",
+        "developer": "HOMM interactive",
+        "developerUrl": "https://github.com/HOMMinteractive",
+        "documentationUrl": "https://github.com/HOMMinteractive/pixxio/blob/master/README.md",
+        "changelogUrl": "https://raw.githubusercontent.com/HOMMinteractive/pixxio/master/CHANGELOG.md",
+        "class": "homm\\hommpixxio\\HOMMPixxio"
+    }
+}

@@ -1,0 +1,128 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{#
+/**
+ * HOMM pixx.io plugin for Craft CMS
+ *
+ * HOMMPixxioField Field Input
+ *
+ * @author    Benjamin Ammann
+ * @copyright Copyright (c) 2024 HOMM interactive
+ * @link      https://github.com/HOMMinteractive
+ * @package   HOMMPixxio
+ * @since     0.0.1
+ */
+#}
+
+<div class="pixxio-field">
+    <div class="pixxio-file">
+        <figure>
+            <img src="{{ value.url }}" alt="{{ value.name }}" loading="lazy" target="_blank">
+            <figcaption>{{ value.name ?: ('No file selected...'|t('hommpixxio')) }}</figcaption>
+        </figure>
+
+        <input type="hidden" name="{{ name }}[id]" data-type="id" value="{{ value.id }}">
+        <input type="hidden" name="{{ name }}[name]" data-type="name" value="{{ value.name }}">
+        <input type="hidden" name="{{ name }}[url]" data-type="url" value="{{ value.url }}">
+        <input type="hidden" name="{{ name }}[directory]" data-type="directory" value="{{ value.directory }}">
+    </div>
+
+    <div class="flex">
+        <button class="pixxio-modal-toggle btn add icon dashed" type="button">{{ 'Choose file'|t('hommpixxio') }}</button>
+        <button class="pixxioField_removefile btn delete icon dashed" type="button">{{ 'Remove file'|t('hommpixxio') }}</button>
+    </div>
+</div>
+
+<div class="modal pixxio-modal elementselectormodal" style="display: none" id="{{ name }}_modal">
+    <div class="body has-sidebar">
+        <div class="element-index content has-sidebar">
+            <div class="sidebar">
+                <nav>
+                    <ul>
+                        {% for directory in directories %}
+                            <li>
+                                <a href="/admin/hommpixxio/directories/{{ directory.id }}" data-id="{{ directory.id }}" data-parentid="" data-name="{{ directory.name }}" data-pixxio-type="directory" tabindex="0" class="{{ loop.first ? 'sel' }}">
+                                    <span class="label">{{ directory.name }}</span>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="main">
+                <div class="toolbar flex" style="align-items: center; flex-wrap: nowrap;">
+                    <div class="pixxio-mobile-toggle">
+                        <button type="button" class="nav-toggle btn-empty" aria-expanded="false" aria-controls="modal-sidebar" aria-label="Seitenleiste anzeigen" style="margin-left: 0;" onclick="document.querySelector('.pixxio-modal .content.has-sidebar').classList.toggle('show-sidebar')"></button>
+                    </div>
+
+                    <div class="search-container flex-grow texticon has-filter-btn">
+                        <span class="texticon-icon search icon" aria-hidden="true"></span>
+                        <input type="text" class="clearable text fullwidth" autocomplete="off" placeholder="Suche" dir="ltr" aria-label="Suche" data-url="/admin/hommpixxio/files/search">
+                        <button class="clear-btn" title="Suche löschen" role="button" aria-label="Suche löschen"></button>
+                    </div>
+                </div>
+
+                <div class="homm-pixxio elements busy">
+                    <template class="directory">
+                        <section>
+                            <a href="/admin/hommpixxio/directories/{parentID}" data-id="" data-parentid="" data-name="" data-pixxio-type="directory" tabindex="0" class="" title="">
+                                <figure>
+                                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewbox="0 0 340 340" style="enable-background: new 0 0 340 340;" xml:space="preserve" role="img">
+                                        <g>
+                                            <path style="fill:hsl(210, 10%, 53%);" d="M50,293c-19.3,0-35-15.5-35-34.5V81.3c0-19,15.7-34.5,35-34.5h107.1l30,29.5h103c19.3,0,35,15.5,35,34.5v147.7 c0,19-15.7,34.5-35,34.5H50z"></path>
+                                            <path style="fill:hsl(212, 50%, 93%);" d="M155,51.8l30,29.5h105c16.6,0,30,13.3,30,29.5v147.7c0,16.3-13.5,29.5-30,29.5H50c-16.6,0-30-13.3-30-29.5 V81.3c0-16.2,13.5-29.5,30-29.5H155 M159.1,41.8H155H50c-22,0-40,17.7-40,39.5v177.2c0,21.8,17.9,39.5,40,39.5h240 c22,0,40-17.7,40-39.5V110.8c0-21.8-17.9-39.5-40-39.5H189.1L162,44.7L159.1,41.8L159.1,41.8z"></path>
+                                        </g>
+                                    </svg>
+                                </figure>
+                                <figcaption></figcaption>
+                            </a>
+                        </section>
+                    </template>
+
+                    <template class="file">
+                        <section>
+                            <a href="" data-id="" data-parentid="" data-name="" data-pixxio-type="file" tabindex="0" class="" title="" target="_blank">
+                                <figure>
+                                    <img src="" alt="" loading="lazy">
+                                    <figcaption></figcaption>
+                                </figure>
+
+                                <span data-icon="external" onclick="window.open(this.parentNode.href, '_blank')"></span>
+                            </a>
+                        </section>
+                    </template>
+
+                    <div class="thumbsview">
+                    </div>
+
+                    <div class="update-spinner spinner spinner-absolute"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="left">
+            <div class="flex pagination">
+                <nav class="flex" aria-label="Asset Paginierung">
+                    <button role="button" class="page-link prev-page disabled" disabled="disabled" title="Vorherige Seite"></button>
+                    <button role="button" class="page-link next-page" title="Nächste Seite"></button>
+                </nav>
+
+                <div class="pixxio-page-info">
+                    <span data-page-start="">0</span>&ndash;<span data-page-end="">0</span>
+                    <span>{{ 'from'|t('hommpixxio') }}</span>
+                    <span data-total-quantity="">0</span>
+                    <span>{{ 'Files'|t('hommpixxio') }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="buttons right">
+            <div class="btn pixxio-modal_close" tabindex="0">{{ 'Close'|t('hommpixxio') }}</div>
+            <div class="btn disabled submit pixxio-modal_select">{{ 'Choose file'|t('hommpixxio') }}</div>
+        </div>
+    </div>
+
+    <div class="resizehandle"></div>
+</div>

@@ -1,0 +1,42 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{#
+/**
+ * HOMM pixx.io plugin for Craft CMS
+ *
+ * HOMMPixxio settings
+ *
+ * @author    Benjamin Ammann
+ * @copyright Copyright (c) 2024 HOMM interactive
+ * @link      https://github.com/HOMMinteractive
+ * @package   HOMMPixxio
+ * @since     0.0.1
+ */
+#}
+
+{% import "_includes/forms" as forms %}
+
+{% do view.registerAssetBundle("homm\\hommpixxio\\assetbundles\\settings\\SettingsAsset") %}
+
+{{ forms.textField({
+    label: 'API key'|t('hommpixxio'),
+    instructions: 'Specify the pixx.io API key here'|t('hommpixxio'),
+    id: 'apiKey',
+    name: 'apiKey',
+    value: settings['apiKey'],
+    required: true,
+}) }}
+
+{{ forms.textField({
+    label: 'Mediaspace URL'|t('hommpixxio'),
+    instructions: 'Specify the pixx.io Mediaspace URL'|t('hommpixxio'),
+    id: 'mediaspaceUrl',
+    name: 'mediaspaceUrl',
+    placeholder: 'e.g. https://your_mediaspace_url.pixxio.media',
+    value: settings['mediaspaceUrl'],
+    required: true,
+    type: 'url',
+}) }}
+
+<div>
+    <p><a href="https://www.pixx.io/api/" target="_blank" rel="noopener" title="{{ 'pixx.io Api docs'|t('hommpixxio') }}">{{ 'How to create an API key in pixx.io'|t('hommpixxio') }} <span data-icon="external"></span></a></p>
+</div>
