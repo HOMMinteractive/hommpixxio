@@ -60,7 +60,13 @@ class HOMMPixxioField extends Field implements PreviewableFieldInterface
     public function normalizeValue(mixed $value, ?\craft\base\ElementInterface $element = null): mixed
     {
         if (gettype($value) == 'string') {
-            return json_decode($value, true);
+            $json = array_filter(json_decode($value, true));
+
+            if (empty($json)) {
+                return null;
+            }
+
+            return $json;
         } elseif ($value === null) {
             return $value;
         } else {

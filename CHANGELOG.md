@@ -7,6 +7,10 @@ to [Semantic Versioning](http://semver.org/).
 
 ## 0.0.1 - 2024-08-16
 
-### Added
+### Changed
+
+- Return null if the field has no values
+
+## 0.0.1 - 2024-08-16
 
 - Initial release
