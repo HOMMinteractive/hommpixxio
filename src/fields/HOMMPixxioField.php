@@ -96,6 +96,11 @@ class HOMMPixxioField extends Field implements PreviewableFieldInterface
         $jsonVars = Json::encode($jsonVars);
         Craft::$app->getView()->registerJs("$('#{$namespacedId}-field').HOMMPixxioField(" . $jsonVars . ");");
 
+        $directories = [];
+        try {
+            $directories = HOMMPixxio::$plugin->pixxioService->getDirectoryTree();
+        } catch (\Throwable $th) { }
+
         // Render the input template
         return Craft::$app->getView()->renderTemplate(
             'hommpixxio/_components/fields/HOMMPixxioField_input',
@@ -105,8 +110,8 @@ class HOMMPixxioField extends Field implements PreviewableFieldInterface
                 'field' => $this,
                 'id' => $id,
                 'namespacedId' => $namespacedId,
-                'directories' => HOMMPixxio::$plugin->pixxioService->getDirectoryTree(),
-                // 'files' => HOMMPixxio::$plugin->pixxioService->getFiles(),
+                'directories' => $directories,
+                'isPluginConfigured' => (HOMMPixxio::$plugin->getSettings()->mediaspaceUrl && HOMMPixxio::$plugin->getSettings()->apiKey)
             ]
         );
     }

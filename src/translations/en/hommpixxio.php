@@ -19,6 +19,10 @@ return [
     'Choose file' => 'Choose file',
     'Remove file' => 'Remove file',
     'HOMM pixx.io' => 'HOMM pixx.io',
-    'pixx.io API key' => 'pixx.io API key',
+    'Specify the pixx.io API key here' => 'Specify the pixx.io API key here',
+    'Specify the pixx.io Mediaspace URL' => 'Specify the pixx.io Mediaspace URL',
     'How to create an API key in pixx.io' => 'How to create an API key in pixx.io',
+    'No file selected...' => 'No file selected...',
+    'You need to provide an API key and Mediaspace URL first.' => 'You need to provide an API key and Mediaspace URL first.',
+    'Go to the plugin settings' => 'Go to the plugin settings',
 ];
