@@ -359,7 +359,7 @@ Craft.PixxioModal = Garnish.Modal.extend(
                 $template = $container.find('template.file');
                 self.renderPageButtons(fileResponse);
                 fileResponse.files.forEach(file => {
-                    self.renderFile($template, $thumbsview, { id: file.id, name: file.fileName, src: file.previewFileURL, parentid: file.directory.id });
+                    self.renderFile($template, $thumbsview, { id: file.id, name: file.fileName, src: file.previewFileURL, href: file.originalFileURL, parentid: file.directory.id });
                 });
 
                 self.hideSpinner();
@@ -398,7 +398,7 @@ Craft.PixxioModal = Garnish.Modal.extend(
                         $container.find('section').remove();
 
                         response.files.forEach(file => {
-                            this.renderFile($template, $thumbsview, { id: file.id, name: file.fileName, src: file.previewFileURL, parentid: file.directory.id })
+                            this.renderFile($template, $thumbsview, { id: file.id, name: file.fileName, src: file.previewFileURL, href: file.originalFileURL, parentid: file.directory.id })
                         });
 
                         this.hideSpinner();
