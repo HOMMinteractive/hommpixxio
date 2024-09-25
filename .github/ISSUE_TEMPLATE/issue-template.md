@@ -43,13 +43,12 @@ If applicable, add screenshots to help explain your problem.
 
 -   OS: [e.g. OpenSUSE 15.1]
 -   Browser [e.g. Firefox 65]
--   Version [e.g. 6.x]
 
 ##### Version (if bug)
 
--   Craft version: [e.g. 3.7.10]
--   Plugin version: [e.g. 0.0.2]
--   PHP version: [e.g. 7.4.23]
+-   Craft version: [e.g. 4.11.5]
+-   Plugin version: [e.g. 0.0.3]
+-   PHP version: [e.g. 8.2.22]
 -   Database driver & version: [e.g. MariaDB 10.3.31]
 
 ##### Additional context
