@@ -113,3 +113,9 @@
 .pixxio-modal .pixxio-page-info {
     padding: 6px 0;
 }
+
+
+/* Plugin not yet configured */
+.plugin-not-configured {
+    color: red;
+}

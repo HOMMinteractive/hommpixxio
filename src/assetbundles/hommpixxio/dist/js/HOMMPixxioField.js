@@ -263,14 +263,14 @@ Craft.PixxioModal = Garnish.Modal.extend(
             this.addListener($cloneLink, 'click', 'onRenderDirectoryTreeClick');
         },
 
-        renderFile: function ($template, $thumbsview, { id, name, src, parentid }) {
+        renderFile: function ($template, $thumbsview, { id, name, src, href, parentid }) {
             let $clone = $($template.html());
             let $cloneLink = $clone.find('a');
 
             $cloneLink.attr('data-parentid', parentid);
             $cloneLink.attr('data-id', id);
             $cloneLink.attr('data-name', name);
-            $cloneLink.attr('href', src);
+            $cloneLink.attr('href', href);
             $cloneLink.attr('title', name);
             $cloneLink.find('figure img').attr('src', src);
             $cloneLink.find('figure img').attr('alt', name);
@@ -359,7 +359,7 @@ Craft.PixxioModal = Garnish.Modal.extend(
                 $template = $container.find('template.file');
                 self.renderPageButtons(fileResponse);
                 fileResponse.files.forEach(file => {
-                    self.renderFile($template, $thumbsview, { id: file.id, name: file.fileName, src: file.originalFileURL, parentid: file.directory.id });
+                    self.renderFile($template, $thumbsview, { id: file.id, name: file.fileName, src: file.previewFileURL, parentid: file.directory.id });
                 });
 
                 self.hideSpinner();
@@ -398,7 +398,7 @@ Craft.PixxioModal = Garnish.Modal.extend(
                         $container.find('section').remove();
 
                         response.files.forEach(file => {
-                            this.renderFile($template, $thumbsview, { id: file.id, name: file.fileName, src: file.originalFileURL, parentid: file.directory.id })
+                            this.renderFile($template, $thumbsview, { id: file.id, name: file.fileName, src: file.previewFileURL, parentid: file.directory.id })
                         });
 
                         this.hideSpinner();
