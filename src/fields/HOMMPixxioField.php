@@ -123,7 +123,7 @@ class HOMMPixxioField extends Field implements PreviewableFieldInterface
                 <div class="elementthumb">
                     <img srcset="{$value['url']}" alt="{$value['name']}">
                 </div>
-                <div class="label" style="max-width: 200px; line-height: 1.25;">
+                <div class="label" style="max-width: 150px; line-height: 1.25; white-space: nowrap;">
                     <span class="title">
                         <a href="{$value['url']}">{$value['name']}</a>
                     </span>
