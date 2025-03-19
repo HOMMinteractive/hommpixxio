@@ -102,14 +102,23 @@ class PixxioClient extends \GuzzleHttp\Client
      */
     public function searchFiles(string $term, int $page = 1, int $directoryID = null): \Psr\Http\Message\ResponseInterface
     {
+        $terms = explode(' ', $term);
+
         $filters = [];
-        $filters[] = [
-            'filterType' => 'fileName',
-            'term' => $term,
-            'exactMatch' => false,
-            'useSynonyms' => true,
-            'inverted' => false,
-        ];
+
+        foreach ($terms as $term) {
+            if (empty(trim($term))) {
+                continue;
+            }
+
+            $filters[] = [
+                'filterType' => 'fileName',
+                'term' => $term,
+                'exactMatch' => false,
+                'useSynonyms' => true,
+                'inverted' => false,
+            ];
+        }
 
         if ($directoryID) {
             $filters[] = [

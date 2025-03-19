@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres
 to [Semantic Versioning](http://semver.org/).
 
+## 0.0.6 - 2025-03-19
+
+### Changed
+
+- search for multiple terms separated by space
+
+## 0.0.5 - 2025-01-10
+
+### Fixed
+
+- set white-space nowrap for field in elements overview
+
 ## 0.0.4 - 2024-09-25
 
 ### Fixed
