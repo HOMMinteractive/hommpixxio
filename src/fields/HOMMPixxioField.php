@@ -67,10 +67,8 @@ class HOMMPixxioField extends Field implements PreviewableFieldInterface
             }
 
             return $json;
-        } elseif ($value === null) {
-            return $value;
         } else {
-            return json_encode($value);
+            return $value;
         }
     }
 
@@ -116,17 +114,23 @@ class HOMMPixxioField extends Field implements PreviewableFieldInterface
         );
     }
 
-    public function getTableAttributeHtml(mixed $value, ElementInterface $element): string
+    public function getPreviewHtml(mixed $value, ElementInterface $element): string
     {
+        if (!$value) {
+            return '';
+        }
+
         return <<<EOL
-            <div class="element small hasthumb" title="{$value['name']}">
-                <div class="elementthumb">
-                    <img srcset="{$value['url']}" alt="{$value['name']}">
-                </div>
-                <div class="label" style="max-width: 150px; line-height: 1.25; white-space: nowrap;">
-                    <span class="title">
-                        <a href="{$value['url']}">{$value['name']}</a>
-                    </span>
+            <div class="inline-chips" title="{$value['name']}">
+                <div class="chip small element" title="{$value['name']}">
+                    <div class="thumb checkered">
+                        <img srcset="{$value['url']}" alt="{$value['name']}">
+                    </div>
+                    <div class="chip-content" style="max-width: 150px; line-height: 1.25; white-space: nowrap;">
+                        <span class="label">
+                            <a class="label-link" href="{$value['url']}">{$value['name']}</a>
+                        </span>
+                    </div>
                 </div>
             </div>
         EOL;

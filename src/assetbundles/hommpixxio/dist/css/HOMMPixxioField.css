@@ -16,6 +16,10 @@
     margin-bottom: calc(var(--padding) / 2);
 }
 
+.pixxio-field .pixxio-file figure canvas {
+    display: none;
+}
+
 .pixxio-field .pixxio-file figure img {
     max-width: 100%;
     height: auto;
