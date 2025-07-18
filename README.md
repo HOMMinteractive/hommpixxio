@@ -8,7 +8,7 @@ Craft CMS pixx.io adapter
 
 ## Requirements
 
-This plugin requires Craft CMS 4.x.
+This plugin requires Craft CMS 5.x.
 
 ## Installation
 
