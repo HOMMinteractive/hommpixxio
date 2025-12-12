@@ -97,10 +97,10 @@ class PixxioClient extends \GuzzleHttp\Client
      *
      * @param  string  $term
      * @param  int     $page
-     * @param  int     $directoryID
+     * @param  ?int    $directoryID
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function searchFiles(string $term, int $page = 1, int $directoryID = null): \Psr\Http\Message\ResponseInterface
+    public function searchFiles(string $term, int $page = 1, ?int $directoryID = null): \Psr\Http\Message\ResponseInterface
     {
         $terms = explode(' ', $term);
 
@@ -111,13 +111,33 @@ class PixxioClient extends \GuzzleHttp\Client
                 continue;
             }
 
-            $filters[] = [
+            $filter = [
                 'filterType' => 'fileName',
                 'term' => $term,
                 'exactMatch' => false,
                 'useSynonyms' => true,
                 'inverted' => false,
             ];
+
+            $termCleaned = transliterator_transliterate('Any-Latin; Latin-ASCII', $term);
+            if ($term !== $termCleaned) {
+                $filterUncleaned = $filter;
+
+                $filterCleaned = [
+                    'filterType' => 'fileName',
+                    'term' => $termCleaned,
+                    'exactMatch' => false,
+                    'useSynonyms' => true,
+                    'inverted' => false,
+                ];
+
+                $filter = [
+                    'filterType' => 'connectorOr',
+                    'filters' => [$filterUncleaned, $filterCleaned],
+                ];
+            }
+
+            $filters[] = $filter;
         }
 
         if ($directoryID) {
