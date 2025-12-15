@@ -64,6 +64,14 @@ class PixxioService extends Component
     }
 
     /**
+     * Get a specific file binary
+     */
+    public function getFile(int $fileID)
+    {
+        return (new PixxioClient())->getFile($fileID);
+    }
+
+    /**
      * Search all files for $term
      *
      * @param  string $term

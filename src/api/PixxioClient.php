@@ -84,12 +84,22 @@ class PixxioClient extends \GuzzleHttp\Client
                 'responseFields' => json_encode([
                     'id',
                     'fileName',
-                    'originalFileURL',
                     'previewFileURL',
                     'directory',
                 ]),
             ],
         ]);
+    }
+
+    /**
+     * Get a binary file
+     *
+     * @param  int $fileID
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function getFile(int $fileID): \Psr\Http\Message\ResponseInterface
+    {
+        return $this->get('files/' . $fileID . '/convert?downloadType=original&responseType=binary');
     }
 
     /**
@@ -159,7 +169,6 @@ class PixxioClient extends \GuzzleHttp\Client
                 'responseFields' => json_encode([
                     'id',
                     'fileName',
-                    'originalFileURL',
                     'previewFileURL',
                     'directory',
                 ]),

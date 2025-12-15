@@ -1,4 +1,5 @@
 <?php
+
 /**
  * HOMM pixx.io plugin for Craft CMS
  *
@@ -84,6 +85,14 @@ class HOMMPixxio extends Plugin
                 $event->rules['hommpixxio/directories/<parentID:\d+>'] = 'hommpixxio/pixxio/directories';
                 $event->rules['hommpixxio/directories/<directoryID:\d+>/files'] = 'hommpixxio/pixxio/files';
                 $event->rules['hommpixxio/files/search'] = 'hommpixxio/pixxio/search-files';
+            }
+        );
+
+        Event::on(
+            UrlManager::class,
+            UrlManager::EVENT_REGISTER_SITE_URL_RULES,
+            function (RegisterUrlRulesEvent $event) {
+                $event->rules['hommpixxio/files/<fileID:\d+>'] = 'hommpixxio/pixxio/file';
             }
         );
 
