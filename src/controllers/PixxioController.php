@@ -1,4 +1,5 @@
 <?php
+
 /**
  * HOMM pixx.io plugin for Craft CMS
  *
@@ -56,5 +57,45 @@ class PixxioController extends Controller
         }
 
         return $this->asJson(HOMMPixxio::$plugin->pixxioService->searchFiles($term, $page, $directoryID));
+    }
+
+    /**
+     * @return mixed
+     */
+    public function actionFile(int $fileID)
+    {
+        $pixxioResponse = HOMMPixxio::$plugin->pixxioService->getFile($fileID);
+
+        // Get the content, headers, and status
+        $body = $pixxioResponse->getBody();
+        $statusCode = $pixxioResponse->getStatusCode();
+        $headers = $pixxioResponse->getHeaders();
+
+        // Set response component via Craft
+        $response = Craft::$app->getResponse();
+        $response->format = \yii\web\Response::FORMAT_RAW;
+        $response->statusCode = $statusCode;
+
+        // Set headers
+        foreach ($headers as $name => $values) {
+            foreach ($values as $value) {
+                $response->headers->add($name, $value);
+            }
+        }
+
+        // Set content
+        $response->content = $body->getContents();
+
+        // Set mime type
+        $finfo = new \finfo(FILEINFO_MIME_TYPE);
+        $mimeType = $finfo->buffer($response->content);
+        $response->headers->remove('Content-Type');
+        $response->headers->set('Content-Type', $mimeType);
+
+        // Set content disposition
+        $response->headers->remove('Content-Disposition');
+        $response->headers->set('Content-Disposition', 'inline');
+
+        return $response;
     }
 }

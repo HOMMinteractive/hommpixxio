@@ -15,10 +15,10 @@ use Craft;
 use craft\base\ElementInterface;
 use craft\base\Field;
 use craft\base\PreviewableFieldInterface;
-use craft\elements\Asset;
 use craft\helpers\Json;
 use homm\hommpixxio\assetbundles\hommpixxio\HOMMPixxioAsset;
 use homm\hommpixxio\HOMMPixxio;
+use homm\hommpixxio\models\PixxioValue;
 use yii\db\Schema;
 
 /**
@@ -57,19 +57,28 @@ class HOMMPixxioField extends Field implements PreviewableFieldInterface
     /**
      * @inheritdoc
      */
-    public function normalizeValue(mixed $value, ?\craft\base\ElementInterface $element = null): mixed
+    public function normalizeValue(mixed $value, ?ElementInterface $element = null): mixed
     {
-        if (gettype($value) == 'string') {
+        if (is_string($value)) {
             $json = array_filter(json_decode($value, true));
 
             if (empty($json)) {
                 return null;
             }
 
-            return $json;
-        } else {
-            return $value;
+            return new PixxioValue($json);
         }
+
+        if (is_array($value)) {
+            return new PixxioValue($value);
+        }
+
+        return $value;
+    }
+
+    public function serializeValue(mixed $value, ?ElementInterface $element): mixed
+    {
+        return parent::serializeValue($value, $element);
     }
 
     /**

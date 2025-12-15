@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres
 to [Semantic Versioning](http://semver.org/).
 
+## 1.1.0 - 2025-12-12
+
+- Changed pixx.io file request method for upcoming API changes (they removed the `originalFileURL` response field)
+
 ## 1.0.1 - 2025-12-12
 
 - Search also for accents and vice-versa

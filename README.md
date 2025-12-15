@@ -44,7 +44,7 @@ Here you can set an API key.
 Basic usage in the template (Twig):
 
 ```html
-<img src="{{ entry.pixxioField.originalFileURL }}" alt="">
+<img src="{{ entry.pixxioField.url }}" alt="">
 ```
 
 ## HOMM pixx.io Roadmap
