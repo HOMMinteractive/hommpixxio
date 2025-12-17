@@ -22,6 +22,8 @@ use homm\hommpixxio\HOMMPixxio;
  */
 class PixxioController extends Controller
 {
+    protected array|bool|int $allowAnonymous = ['file'];
+
     // Public Methods
     // =========================================================================
 
@@ -76,13 +78,6 @@ class PixxioController extends Controller
         $response->format = \yii\web\Response::FORMAT_RAW;
         $response->statusCode = $statusCode;
 
-        // Set headers
-        foreach ($headers as $name => $values) {
-            foreach ($values as $value) {
-                $response->headers->add($name, $value);
-            }
-        }
-
         // Set content
         $response->content = $body->getContents();
 
@@ -93,8 +88,8 @@ class PixxioController extends Controller
         $response->headers->set('Content-Type', $mimeType);
 
         // Set content disposition
-        $response->headers->remove('Content-Disposition');
-        $response->headers->set('Content-Disposition', 'inline');
+        $contentDisposition = $headers['Content-Disposition'][0] ?? 'inline';
+        $response->headers->set('Content-Disposition', str_replace('attachment', 'inline', $contentDisposition));
 
         return $response;
     }
