@@ -76,7 +76,7 @@ class HOMMPixxioField extends Field implements PreviewableFieldInterface
         return $value;
     }
 
-    public function serializeValue(mixed $value, ?ElementInterface $element): mixed
+    public function serializeValue(mixed $value, ?ElementInterface $element = null): mixed
     {
         return parent::serializeValue($value, $element);
     }
