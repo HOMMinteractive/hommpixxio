@@ -60,13 +60,15 @@ class HOMMPixxioField extends Field implements PreviewableFieldInterface
     public function normalizeValue(mixed $value, ?ElementInterface $element = null): mixed
     {
         if (is_string($value)) {
-            $json = array_filter(json_decode($value, true));
+            $value = json_decode($value, true);
+        }
 
-            if (empty($json)) {
-                return null;
-            }
+        if (is_array($value)) {
+            $value = array_filter($value);
+        }
 
-            return new PixxioValue($json);
+        if (empty($value)) {
+            return null;
         }
 
         if (is_array($value)) {
