@@ -11,6 +11,7 @@
 namespace homm\hommpixxio\models;
 
 use craft\base\Model;
+use craft\helpers\App;
 
 /**
  * Class Settings
@@ -46,5 +47,21 @@ class Settings extends Model
             [['apiKey'], 'string'],
             [['mediaspaceUrl'], 'string'],
         ];
+    }
+
+    /**
+     * @return string the parsed pixx.io API key
+     */
+    public function getApiKey(): string
+    {
+        return App::parseEnv($this->apiKey);
+    }
+
+    /**
+     * @return string the parsed pixx.io Mediaspace URL
+     */
+    public function getMediaspaceUrl(): string
+    {
+        return App::parseEnv($this->mediaspaceUrl);
     }
 }

@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres
 to [Semantic Versioning](http://semver.org/).
 
+## 1.1.3 - 2026-01-20
+
+- Add support for env variables in settings
+
 ## 1.1.2 - 2026-01-08
 
 - Hotfix `HOMMPixxioField::normalizeValue()`
@@ -25,6 +29,26 @@ to [Semantic Versioning](http://semver.org/).
 ## 1.0.0 - 2025-07-18
 
 - Craft CMS 5.x ready
+
+## 0.1.3 - 2026-01-20
+
+- Add support for env variables in settings
+
+## 0.1.2 - 2026-01-08
+
+- Hotfix `HOMMPixxioField::normalizeValue()`
+
+## 0.1.1 - 2026-01-06
+
+### Changed
+
+- Added a null as fallback to serializeValue
+
+## 0.1.0 - 2025-12-17
+
+### Changed
+
+- Only send relevant headers and allow anonymous when requesting a binary image
 
 ## 0.0.6 - 2025-03-19
 
