@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres
 to [Semantic Versioning](http://semver.org/).
 
+## 0.1.3 - 2026-01-20
+
+- Add support for env variables in settings
+
 ## 0.1.2 - 2026-01-08
 
 - Hotfix `HOMMPixxioField::normalizeValue()`

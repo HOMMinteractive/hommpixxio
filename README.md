@@ -32,7 +32,7 @@ This plugin requests all images from pixx.io
 
 Go to _Settings > HOMM pixx.io_:
 
-Here you can set an API key.
+Here you can directly set an API key and mediaspace url or an env variable.
 
 ## Using HOMM pixx.io
 

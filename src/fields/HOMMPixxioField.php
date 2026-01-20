@@ -121,7 +121,7 @@ class HOMMPixxioField extends Field implements PreviewableFieldInterface
                 'id' => $id,
                 'namespacedId' => $namespacedId,
                 'directories' => $directories,
-                'isPluginConfigured' => (HOMMPixxio::$plugin->getSettings()->mediaspaceUrl && HOMMPixxio::$plugin->getSettings()->apiKey)
+                'isPluginConfigured' => (HOMMPixxio::$plugin->getSettings()->getMediaspaceUrl() && HOMMPixxio::$plugin->getSettings()->getApiKey())
             ]
         );
     }

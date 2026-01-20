@@ -26,16 +26,16 @@ class PixxioClient extends \GuzzleHttp\Client
 
     public function __construct(array $config = [])
     {
-        if (!HOMMPixxio::$plugin->getSettings()->mediaspaceUrl) {
+        if (!HOMMPixxio::$plugin->getSettings()->getMediaspaceUrl()) {
             throw new \Exception('No pixx.io mediaspace URL defined. Please specify one in the plugin settings', 1);
         }
 
-        if (!HOMMPixxio::$plugin->getSettings()->apiKey) {
+        if (!HOMMPixxio::$plugin->getSettings()->getApiKey()) {
             throw new \Exception('No pixx.io API key defined. Please specify one in the plugin settings', 1);
         }
 
-        $config['base_uri'] = trim(HOMMPixxio::$plugin->getSettings()->mediaspaceUrl, '/') . self::API_PATH;
-        $config['headers'] = ['Authorization' => 'Bearer ' . HOMMPixxio::$plugin->getSettings()->apiKey];
+        $config['base_uri'] = trim(HOMMPixxio::$plugin->getSettings()->getMediaspaceUrl(), '/') . self::API_PATH;
+        $config['headers'] = ['Authorization' => 'Bearer ' . HOMMPixxio::$plugin->getSettings()->getApiKey()];
         parent::__construct($config);
     }
 

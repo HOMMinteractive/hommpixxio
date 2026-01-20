@@ -17,16 +17,17 @@
 
 {% do view.registerAssetBundle("homm\\hommpixxio\\assetbundles\\settings\\SettingsAsset") %}
 
-{{ forms.textField({
+{{ forms.autosuggestField({
     label: 'API key'|t('hommpixxio'),
     instructions: 'Specify the pixx.io API key here'|t('hommpixxio'),
     id: 'apiKey',
     name: 'apiKey',
     value: settings['apiKey'],
     required: true,
+    suggestEnvVars: true,
 }) }}
 
-{{ forms.textField({
+{{ forms.autosuggestField({
     label: 'Mediaspace URL'|t('hommpixxio'),
     instructions: 'Specify the pixx.io Mediaspace URL'|t('hommpixxio'),
     id: 'mediaspaceUrl',
@@ -35,6 +36,8 @@
     value: settings['mediaspaceUrl'],
     required: true,
     type: 'url',
+    suggestEnvVars: true,
+    suggestAliases: true,
 }) }}
 
 <div>
