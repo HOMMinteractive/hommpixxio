@@ -14,6 +14,7 @@ namespace homm\hommpixxio\controllers;
 use Craft;
 use craft\web\Controller;
 use homm\hommpixxio\HOMMPixxio;
+use homm\hommpixxio\api\PixxioClient;
 
 /**
  * @author    Benjamin Ammann
@@ -40,9 +41,10 @@ class PixxioController extends Controller
      */
     public function actionFiles(int $directoryID)
     {
-        $page = Craft::$app->request->getQueryParam('page', 1);
+        $pageCursor = Craft::$app->request->getQueryParam('pageCursor', null);
+        $pageSize = Craft::$app->request->getQueryParam('pageSize', PixxioClient::FILE_PAGE_SIZE);
 
-        return $this->asJson(HOMMPixxio::$plugin->pixxioService->getFiles($directoryID, $page));
+        return $this->asJson(HOMMPixxio::$plugin->pixxioService->getFiles($directoryID, $pageCursor, $pageSize));
     }
 
     /**
@@ -52,13 +54,14 @@ class PixxioController extends Controller
     {
         $term = Craft::$app->request->getQueryParam('term', null);
         $directoryID = Craft::$app->request->getQueryParam('directoryID', null);
-        $page = Craft::$app->request->getQueryParam('page', 1);
+        $pageCursor = Craft::$app->request->getQueryParam('pageCursor', null);
+        $pageSize = Craft::$app->request->getQueryParam('pageSize', PixxioClient::FILE_PAGE_SIZE);
 
         if (!$term) {
             return $this->asJson([]);
         }
 
-        return $this->asJson(HOMMPixxio::$plugin->pixxioService->searchFiles($term, $page, $directoryID));
+        return $this->asJson(HOMMPixxio::$plugin->pixxioService->searchFiles($term, $directoryID, $pageCursor, $pageSize));
     }
 
     /**

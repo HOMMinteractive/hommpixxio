@@ -41,24 +41,24 @@ class PixxioService extends Component
     }
 
     /**
-     * Get the files from a directory
+     * Fetch files from a directory via cursor pagination.
      *
-     * @param  int $directoryID
-     * @param  int $page
+     * @param int         $directoryID
+     * @param string|null $pageCursor previous cursor, or null for first page
+     * @param int         $pageSize   items per page
      * @return array
      */
-    public function getFiles(int $directoryID, int $page = 1)
+    public function getFiles(int $directoryID, ?string $pageCursor = null, int $pageSize = PixxioClient::FILE_PAGE_SIZE)
     {
-        $response = (new PixxioClient())->getFiles($directoryID, $page);
+        $client = new PixxioClient();
+        $response = $client->getFiles($directoryID, $pageCursor, $pageSize);
 
         /** @var \stdClass $payload */
         $payload = json_decode($response->getBody());
-        $payload->pageQuantity = count($payload->files);
-        $payload->pageSize = PixxioClient::FILE_PAGE_SIZE;
-        $payload->pageStart = ($page * $payload->pageSize) - ($payload->pageSize - 1);
-        $payload->pageEnd = ($payload->pageStart - 1) + $payload->pageQuantity;
-        $payload->currentPage = $page;
-        $payload->lastPage = ceil($payload->quantity / $payload->pageSize);
+
+        if (isset($payload->cursor)) {
+            $payload->nextCursor = $payload->cursor;
+        }
 
         return $payload ?? [];
     }
@@ -72,25 +72,25 @@ class PixxioService extends Component
     }
 
     /**
-     * Search all files for $term
+     * Search files by term, cursor pagination only.
      *
-     * @param  string $term
-     * @param  int    $page
-     * @param  int    $directoryID
+     * @param string      $term
+     * @param ?int        $directoryID
+     * @param string|null $pageCursor
+     * @param int         $pageSize
      * @return array
      */
-    public function searchFiles(string $term, int $page = 1, ?int $directoryID = null)
+    public function searchFiles(string $term, ?int $directoryID = null, ?string $pageCursor = null, int $pageSize = PixxioClient::FILE_PAGE_SIZE)
     {
-        $response = (new PixxioClient())->searchFiles($term, $page, $directoryID);
+        $client = new PixxioClient();
+        $response = $client->searchFiles($term, $directoryID, $pageCursor, $pageSize);
 
         /** @var \stdClass $payload */
         $payload = json_decode($response->getBody());
-        $payload->pageQuantity = count($payload->files);
-        $payload->pageSize = PixxioClient::FILE_PAGE_SIZE;
-        $payload->pageStart = ($page * $payload->pageSize) - ($payload->pageSize - 1);
-        $payload->pageEnd = ($payload->pageStart - 1) + $payload->pageQuantity;
-        $payload->currentPage = $page;
-        $payload->lastPage = ceil($payload->quantity / $payload->pageSize);
+
+        if (isset($payload->cursor)) {
+            $payload->nextCursor = $payload->cursor;
+        }
 
         return $payload ?? [];
     }

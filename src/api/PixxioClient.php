@@ -60,34 +60,40 @@ class PixxioClient extends \GuzzleHttp\Client
     }
 
     /**
-     * Get the files from a directory
+     * Fetch files from a directory via cursor pagination.
      *
-     * @param  int $directoryID
-     * @param  int $page
+     * @param  int          $directoryID
+     * @param  string|null  $pageCursor  cursor from previous call
+     * @param  int          $pageSize    items per page
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function getFiles(int $directoryID, $page): \Psr\Http\Message\ResponseInterface
+    public function getFiles(int $directoryID, ?string $pageCursor = null, int $pageSize = self::FILE_PAGE_SIZE): \Psr\Http\Message\ResponseInterface
     {
-        return $this->get('files', [
-            'query' => [
-                'page' => $page,
-                'pageSize' => self::FILE_PAGE_SIZE,
-                'filter' => json_encode([
-                    'filterType' => 'connectorAnd',
-                    'filters' => [
-                        [
-                            'filterType' => 'directory',
-                            'directoryID' => $directoryID,
-                        ],
+        $query = [
+            'pageSize' => $pageSize,
+            'filter' => json_encode([
+                'filterType' => 'connectorAnd',
+                'filters' => [
+                    [
+                        'filterType' => 'directory',
+                        'directoryID' => $directoryID,
                     ],
-                ]),
-                'responseFields' => json_encode([
-                    'id',
-                    'fileName',
-                    'previewFileURL',
-                    'directory',
-                ]),
-            ],
+                ],
+            ]),
+            'responseFields' => json_encode([
+                'id',
+                'fileName',
+                'previewFileURL',
+                'directory',
+            ]),
+        ];
+
+        if ($pageCursor !== null) {
+            $query['pageCursor'] = $pageCursor;
+        }
+
+        return $this->get('files', [
+            'query' => $query,
         ]);
     }
 
@@ -103,14 +109,15 @@ class PixxioClient extends \GuzzleHttp\Client
     }
 
     /**
-     * Search all files for $term
+     * Search files by term with cursor pagination.
      *
-     * @param  string  $term
-     * @param  int     $page
-     * @param  ?int    $directoryID
+     * @param  string      $term
+     * @param  ?int        $directoryID
+     * @param  string|null $pageCursor
+     * @param  int         $pageSize
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function searchFiles(string $term, int $page = 1, ?int $directoryID = null): \Psr\Http\Message\ResponseInterface
+    public function searchFiles(string $term, ?int $directoryID = null, ?string $pageCursor = null, int $pageSize = self::FILE_PAGE_SIZE): \Psr\Http\Message\ResponseInterface
     {
         $terms = explode(' ', $term);
 
@@ -158,21 +165,26 @@ class PixxioClient extends \GuzzleHttp\Client
             ];
         }
 
+        $query = [
+            'pageSize' => $pageSize,
+            'filter' => json_encode([
+                'filterType' => 'connectorAnd',
+                'filters' => $filters,
+            ]),
+            'responseFields' => json_encode([
+                'id',
+                'fileName',
+                'previewFileURL',
+                'directory',
+            ]),
+        ];
+
+        if ($pageCursor !== null) {
+            $query['pageCursor'] = $pageCursor;
+        }
+
         return $this->get('files', [
-            'query' => [
-                'page' => $page,
-                'pageSize' => self::FILE_PAGE_SIZE,
-                'filter' => json_encode([
-                    'filterType' => 'connectorAnd',
-                    'filters' => $filters,
-                ]),
-                'responseFields' => json_encode([
-                    'id',
-                    'fileName',
-                    'previewFileURL',
-                    'directory',
-                ]),
-            ],
+            'query' => $query,
         ]);
     }
 }
