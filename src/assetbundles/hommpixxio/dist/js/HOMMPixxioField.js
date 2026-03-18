@@ -100,11 +100,19 @@ Craft.PixxioModal = Garnish.Modal.extend(
         $nextPageButton: null,
 
         isSearching: null,
-        currentPage: 1,
+        offset: 0,
+        currentQty: 0,
+        activeCursor: null,
 
         init: function (container, field, settings) {
             this.fileField = field;
             this.setSettings(settings, Craft.PixxioModal.defaults);
+
+            this.currentCursor = null;
+            this.activeCursor = null;
+            this.history = [];
+            this.offset = 0;
+            this.currentQty = 0;
 
             // Build the modal
             this.base(container, this.settings);
@@ -144,7 +152,10 @@ Craft.PixxioModal = Garnish.Modal.extend(
         onRenderDirectoryTreeClick: function (e) {
             e.preventDefault();
 
-            this.currentPage = 1;
+            this.currentCursor = null;
+            this.history = [];
+            this.offset = 0;
+            this.currentStart = 0;
 
             let $link = $(e.target);
             if (!$link.data('id')) {
@@ -161,7 +172,10 @@ Craft.PixxioModal = Garnish.Modal.extend(
         onSearchFilesInput: function (e) {
             e.preventDefault();
 
-            this.currentPage = 1;
+            this.currentCursor = null;
+            this.history = [];
+            this.offset = 0;
+            this.currentStart = 0;
             this.searchFiles();
         },
 
@@ -172,7 +186,11 @@ Craft.PixxioModal = Garnish.Modal.extend(
                 return;
             }
 
-            this.currentPage--;
+            if (this.history.length) {
+                var entry = this.history.pop();
+                this.currentCursor = entry.cursor;
+                this.offset -= entry.qty;
+            }
 
             if (this.$searchInput.val()) {
                 this.searchFiles();
@@ -192,7 +210,9 @@ Craft.PixxioModal = Garnish.Modal.extend(
                 return;
             }
 
-            this.currentPage++;
+            // store current page size and cursor before moving on
+            this.history.push({ cursor: this.activeCursor, qty: this.currentQty });
+            this.offset += this.currentQty;
 
             if (this.$searchInput.val()) {
                 this.searchFiles();
@@ -207,33 +227,38 @@ Craft.PixxioModal = Garnish.Modal.extend(
         },
 
         renderPageButtons: function (response) {
-            if (response.quantity) {
-                this.$pageInfo.find('[data-page-start]').text(response.pageStart);
-                this.$pageInfo.find('[data-page-end]').text(response.pageEnd);
-                this.$pageInfo.find('[data-total-quantity]').text(response.quantity);
-            } else {
-                this.$pageInfo.find('[data-page-start]').text('0');
-                this.$pageInfo.find('[data-page-end]').text('0');
-                this.$pageInfo.find('[data-total-quantity]').text('0');
-            }
+            var qty = response.files ? response.files.length : 0;
+            this.currentQty = qty;
 
-            if (this.currentPage <= 1) {
-                this.currentPage = 1;
-                this.$prevPageButton.attr('disabled', 'disabled');
-                this.$prevPageButton.addClass('disabled');
-            } else {
-                this.$prevPageButton.removeAttr('disabled');
-                this.$prevPageButton.removeClass('disabled');
-            }
+            var $pageInfo = this.$pageInfo;
 
-            if (this.currentPage >= response.lastPage) {
-                this.currentPage = response.lastPage;
-                this.$nextPageButton.attr('disabled', 'disabled');
-                this.$nextPageButton.addClass('disabled');
-            } else {
-                this.$nextPageButton.removeAttr('disabled');
-                this.$nextPageButton.removeClass('disabled');
-            }
+            var setText = function (selector, value) {
+                $pageInfo.find(selector).text(value);
+            };
+
+            var setButtonEnabled = function ($button, enabled) {
+                if (enabled) {
+                    $button.removeAttr('disabled').removeClass('disabled');
+                } else {
+                    $button.attr('disabled', 'disabled').addClass('disabled');
+                }
+            };
+
+            setText('[data-total-quantity]', response.quantity || 0);
+
+            var start = qty === 0 ? 0 : this.offset + 1;
+            var end = qty === 0 ? 0 : this.offset + qty;
+            setText('[data-page-start]', start);
+            setText('[data-page-end]', end);
+
+            setButtonEnabled(this.$prevPageButton, this.history.length > 0);
+            setButtonEnabled(this.$nextPageButton, Boolean(response.nextCursor));
+
+            // update the cursor for subsequent requests
+            this.currentCursor = response.nextCursor || null;
+
+            // advance our start index for the next page
+            this.currentStart = end;
         },
 
         enableSelectBtn: function () {
@@ -370,7 +395,14 @@ Craft.PixxioModal = Garnish.Modal.extend(
                 onFinishRequests();
             });
 
-            $.get(directory.url + '/files' + '?page=' + this.currentPage, (response) => {
+            var fileUrl = directory.url + '/files';
+            if (this.currentCursor) {
+                fileUrl += '?pageCursor=' + encodeURIComponent(this.currentCursor);
+            }
+            // record which cursor we're requesting so history can restore it later
+            this.activeCursor = this.currentCursor || null;
+
+            $.get(fileUrl, (response) => {
                 fileResponse = response;
                 onFinishRequests(response);
             });
@@ -390,7 +422,14 @@ Craft.PixxioModal = Garnish.Modal.extend(
                         directory = this.selectedDirectories[this.selectedDirectories.length - 1];
                     }
 
-                    $.get(this.$searchInput.data('url') + '?page=' + this.currentPage + '&term=' + this.$searchInput.val() + '&directoryID=' + directory.id, (response) => {
+                    var searchUrl = this.$searchInput.data('url');
+                    searchUrl += '?term=' + encodeURIComponent(this.$searchInput.val()) + '&directoryID=' + directory.id;
+                    if (this.currentCursor) {
+                        searchUrl += '&pageCursor=' + encodeURIComponent(this.currentCursor);
+                    }
+                    this.activeCursor = this.currentCursor || null;
+
+                    $.get(searchUrl, (response) => {
                         this.renderPageButtons(response);
 
                         let $template = $container.find('template.file');
