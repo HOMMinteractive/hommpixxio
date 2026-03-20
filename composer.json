@@ -39,7 +39,7 @@
         "developer": "HOMM interactive",
         "developerUrl": "https://github.com/HOMMinteractive",
         "documentationUrl": "https://github.com/HOMMinteractive/hommpixxio/blob/main/README.md",
-        "changelogUrl": "https://raw.githubusercontent.com/HOMMinteractive/pixxio/master/CHANGELOG.md",
+        "changelogUrl": "https://raw.githubusercontent.com/HOMMinteractive/hommpixxio/main/CHANGELOG.md",
         "class": "homm\\hommpixxio\\HOMMPixxio"
     }
 }
