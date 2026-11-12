@@ -105,6 +105,8 @@ class HOMMPixxioField extends Field implements PreviewableFieldInterface
         $jsonVars = Json::encode($jsonVars);
         Craft::$app->getView()->registerJs("$('#{$namespacedId}-field').HOMMPixxioField(" . $jsonVars . ");");
 
+        $directories = [];
+
         try {
             $directories = HOMMPixxio::$plugin->pixxioService->getDirectoryTree();
         } catch (\Throwable $th) {

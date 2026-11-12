@@ -54,7 +54,7 @@ class Settings extends Model
      */
     public function getApiKey(): string
     {
-        return App::parseEnv($this->apiKey);
+        return App::parseEnv($this->apiKey) ?? '';
     }
 
     /**
@@ -62,6 +62,6 @@ class Settings extends Model
      */
     public function getMediaspaceUrl(): string
     {
-        return App::parseEnv($this->mediaspaceUrl);
+        return App::parseEnv($this->mediaspaceUrl) ?? '';
     }
 }
